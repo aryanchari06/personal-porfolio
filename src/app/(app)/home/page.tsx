@@ -9,6 +9,8 @@ import {
   GithubIcon,
   LucideLinkedin,
   Mail,
+  Moon,
+  Sun,
 } from "lucide-react";
 
 const Page = () => {
@@ -73,6 +75,7 @@ const Page = () => {
 
   const [openSkill, setOpenSkill] = useState<Record<string, boolean>>({});
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true); // default to dark mode
 
   const toggleSkill = (name: string) => {
     setOpenSkill((prev) => ({
@@ -83,35 +86,50 @@ const Page = () => {
 
   return (
     <div
-      className="min-h-screen"
+      className={`min-h-screen ${
+        isDarkMode ? "bg-black text-white" : "bg-white text-black"
+      }`}
       onClick={() => {
         if (isProfileOpen) {
           setIsProfileOpen(false);
         }
       }}
     >
+      <button
+        onClick={() => setIsDarkMode((prev) => !prev)}
+        className={`fixed top-4 right-4 z-50 px-3 py-2 text-lg cursor-pointer font-medium rounded-full transition-all ${
+          isDarkMode ? "text-white " : "text-black"
+        }`}
+      >
+        {isDarkMode ? <Sun /> : <Moon />}
+      </button>
       {isProfileOpen ? (
         <Image
           src={img}
           width={250}
           height={250}
           alt="profile.jpg"
-          className="z-[100] rounded-full shadow-xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          className="z-[100] rounded-full shadow-2xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         />
-      ) : (
-        <></>
-      )}
+      ) : null}
+
       <div
-        className={`flex duration-200 justify-center bg-black text-white px-4 sm:px-10 py-10 font-sans ${
+        className={`flex duration-200 justify-center px-4 sm:px-10 py-10 font-sans ${
           isProfileOpen ? "blur-lg" : ""
-        } `}
+        }`}
       >
         <div className="max-w-4xl w-full">
           {/* Header */}
           <div className="flex flex-col-reverse md:flex-row justify-around items-center gap-6 mb-12">
             <div>
-              <h1 className="text-5xl font-bold text-center md:text-left">Aryan Chari</h1>
-              <em className="text-gray-400 mt-2 block text-lg text-center md:text-left">
+              <h1 className="text-5xl font-bold text-center md:text-left">
+                Aryan Chari
+              </h1>
+              <em
+                className={`mt-2 block text-lg text-center md:text-left ${
+                  isDarkMode ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
                 JavaScript/TypeScript Full-Stack Developer
               </em>
             </div>
@@ -127,10 +145,12 @@ const Page = () => {
 
           {/* Summary */}
           <section className="mb-10">
-            <h2 className="text-2xl font-semibold underline decoration-white mb-3">
-              Summary
-            </h2>
-            <p className="text-gray-300 leading-relaxed">
+            <h2 className="text-2xl font-semibold underline mb-3">Summary</h2>
+            <p
+              className={`leading-relaxed ${
+                isDarkMode ? "text-gray-300" : "text-gray-700"
+              }`}
+            >
               Final-year B.Tech student from NIT Goa with a strong foundation in
               full-stack web development. Skilled in JavaScript, TypeScript,
               React.js, Next.js, Node.js, Express, MongoDB, PostgreSQL, and
@@ -144,30 +164,49 @@ const Page = () => {
 
           {/* Education */}
           <section className="mb-10">
-            <h2 className="text-2xl font-semibold underline decoration-white mb-3">
-              Education
-            </h2>
+            <h2 className="text-2xl font-semibold underline mb-3">Education</h2>
             <div>
               <h3 className="font-medium text-lg">
                 National Institute of Technology Goa
               </h3>
-              <p className="text-gray-300">
-                <em>Electrical and Electronics Engineering</em>
+              <p
+                className={`italic ${
+                  isDarkMode ? "text-gray-300" : "text-gray-600"
+                }`}
+              >
+                Electrical and Electronics Engineering
               </p>
             </div>
           </section>
 
           {/* Work Experience */}
           <section className="mb-10">
-            <h2 className="text-2xl font-semibold underline decoration-white mb-4">
+            <h2 className="text-2xl font-semibold underline mb-4">
               Work Experience
             </h2>
             <ul className="space-y-6">
               {workExperience.map((work, idx) => (
-                <li key={idx} className="border-l-4 border-white pl-4">
+                <li
+                  key={idx}
+                  className={`border-l-4 pl-4 ${
+                    isDarkMode ? "border-white" : "border-black"
+                  }`}
+                >
                   <h3 className="text-lg font-semibold">{work.company}</h3>
-                  <p className="italic text-gray-400">{work.title}</p>
-                  <p className="text-gray-300">{work.description}</p>
+                  <p
+                    className={`italic ${
+                      isDarkMode ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
+                    {work.title}
+                  </p>
+                  <p
+                    className={`${
+                      isDarkMode ? "text-gray-300" : "text-gray-700"
+                    }`}
+                  >
+                    {work.description}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -175,17 +214,15 @@ const Page = () => {
 
           {/* Skills */}
           <section className="mb-10">
-            <h2 className="text-2xl font-semibold underline decoration-white mb-4">
-              Skills
-            </h2>
+            <h2 className="text-2xl font-semibold underline mb-4">Skills</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {skills.map((skill) => (
-                <div key={skill.name} className="transition-all">
+                <div key={skill.name}>
                   <div
                     onClick={() => toggleSkill(skill.name)}
                     className="flex items-center gap-2 cursor-pointer group"
                   >
-                    <span className="text-white transition-transform group-hover:scale-110">
+                    <span className="transition-transform group-hover:scale-110">
                       {openSkill[skill.name] ? (
                         <CircleMinus size={15} />
                       ) : (
@@ -197,7 +234,11 @@ const Page = () => {
                     </h3>
                   </div>
                   {openSkill[skill.name] && (
-                    <ul className="list-disc list-inside text-gray-300 mt-2 ml-6 space-y-1 transition-all duration-300 ease-in-out">
+                    <ul
+                      className={`list-disc list-inside mt-2 ml-6 space-y-1 transition-all duration-300 ease-in-out ${
+                        isDarkMode ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       {skill.data.map((item) => (
                         <li key={item}>{item}</li>
                       ))}
@@ -210,14 +251,16 @@ const Page = () => {
 
           {/* Projects */}
           <section>
-            <h2 className="text-2xl font-semibold underline decoration-white mb-4">
-              Projects
-            </h2>
+            <h2 className="text-2xl font-semibold underline mb-4">Projects</h2>
             <ul className="space-y-6">
               {projects.map((project, idx) => (
                 <li
                   key={idx}
-                  className="p-4 transition duration-300 hover:[box-shadow:0px_10px_10px_-10px_rgba(255,255,255,0.8)]"
+                  className={`p-4 transition duration-300 ${
+                    isDarkMode
+                      ? "hover:[box-shadow:0px_10px_10px_-10px_rgba(255,255,255,0.8)]"
+                      : "hover:[box-shadow:0px_10px_10px_-10px_rgba(0,0,0,0.2)]"
+                  }`}
                 >
                   <Link href={project.url} target="_blank">
                     <h3 className="text-lg font-semibold">{project.title}</h3>
