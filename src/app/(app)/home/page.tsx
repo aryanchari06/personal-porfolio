@@ -7,12 +7,11 @@ import {
   CircleMinus,
   CirclePlus,
   GithubIcon,
-  LinkedinIcon,
   LucideLinkedin,
   Mail,
 } from "lucide-react";
 
-const page = () => {
+const Page = () => {
   const workExperience = [
     {
       company: "IIT Hyderabad",
@@ -255,4 +254,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
